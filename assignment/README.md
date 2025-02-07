@@ -16,7 +16,7 @@ Ensure you have the following installed on your machine:
 - Postman (for API testing)
 
 Clone the repository
-- git clone <repo-url> backend-assignment
+- git clone <repo-url> user_microservices
 - cd assignment
 
 Start all services with Docker
