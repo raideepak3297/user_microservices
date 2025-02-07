@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  #Receiver Service Exposes API
+  receiver-service:
+    build: ./receiver-service
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - MONGO_URI=mongodb://127.0.0.1:27017/users
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mongo
+      - redis
+
+  #Listener Service - Background worker (NO API)
+  listener-service:
+    build: ./listener-service
+    environment:
+      - PORT=4000
+      - MONGO_URI=mongodb://127.0.0.1:27017/users
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mongo
+      - redis
+
+  #MongoDB will store user data
+  mongo:
+    image: "mongo:latest"
+    ports:
+      - "27017:27017"
+
+  #Redis - Using Pub/Sub messaging
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
